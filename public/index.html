@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gilli Danda - Ancient Indian Game</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div id="loadingScreen" class="loading-screen">
+        <div class="loading-content">
+            <h1>Gilli Danda</h1>
+            <p>Ancient Strike</p>
+            <div class="loading-bar">
+                <div class="loading-progress"></div>
+            </div>
+            <p class="loading-text">Initializing game...</p>
+        </div>
+    </div>
+
+    <!-- Main Menu -->
+    <div id="mainMenu" class="menu-screen hidden">
+        <div class="menu-content">
+            <div class="logo">
+                <h1>⚡ GILLI DANDA ⚡</h1>
+                <p>Ancient Strike</p>
+            </div>
+            <nav class="menu-buttons">
+                <button class="menu-btn primary" onclick="startGame()">Play Game</button>
+                <button class="menu-btn" onclick="showLeaderboard()">Leaderboard</button>
+                <button class="menu-btn" onclick="showSettings()">Settings</button>
+                <button class="menu-btn" onclick="showCredits()">About</button>
+            </nav>
+            <div class="menu-footer">
+                <p>A traditional Indian street game • Browser Edition</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="game-screen hidden">
+        <div class="game-container">
+            <!-- Canvas for 3D rendering -->
+            <canvas id="gameCanvas"></canvas>
+
+            <!-- Game UI Overlay -->
+            <div class="game-ui">
+                <!-- Top HUD -->
+                <div class="hud-top">
+                    <div class="score-display">
+                        <span>Distance: <strong id="distanceDisplay">0.0</strong>m</span>
+                    </div>
+                    <div class="mode-display">
+                        <span id="modeDisplay">Classic Mode</span>
+                    </div>
+                    <div class="timer-display">
+                        <span id="timerDisplay">∞</span>
+                    </div>
+                </div>
+
+                <!-- Bottom Controls -->
+                <div class="hud-bottom">
+                    <div class="control-info">
+                        <p id="controlText">Click and drag to position • Release to strike</p>
+                    </div>
+                    <button class="control-btn" onclick="pauseGame()" id="pauseBtn">⏸ Pause</button>
+                </div>
+
+                <!-- Power Meter -->
+                <div class="power-meter hidden" id="powerMeter">
+                    <div class="meter-label">Power</div>
+                    <div class="meter-bar">
+                        <div class="meter-fill" id="powerFill"></div>
+                    </div>
+                    <div class="meter-value" id="powerValue">0%</div>
+                </div>
+
+                <!-- Angle Indicator -->
+                <div class="angle-indicator hidden" id="angleIndicator">
+                    <div class="angle-value" id="angleValue">0°</div>
+                </div>
+
+                <!-- Game Messages -->
+                <div class="game-messages" id="gameMessages"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Screen -->
+    <div id="leaderboardScreen" class="menu-screen hidden">
+        <div class="menu-content">
+            <h2>🏆 Leaderboard</h2>
+            <div id="leaderboardList" class="leaderboard-list"></div>
+            <button class="menu-btn primary" onclick="backToMenu()">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Settings Screen -->
+    <div id="settingsScreen" class="menu-screen hidden">
+        <div class="menu-content">
+            <h2>⚙️ Settings</h2>
+            <div class="settings-panel">
+                <div class="setting-item">
+                    <label>Master Volume</label>
+                    <input type="range" min="0" max="100" value="70" class="slider" onchange="updateVolume(this.value)">
+                </div>
+                <div class="setting-item">
+                    <label>Graphics Quality</label>
+                    <select onchange="updateGraphics(this.value)">
+                        <option value="low">Low</option>
+                        <option value="medium" selected>Medium</option>
+                        <option value="high">High</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>Difficulty</label>
+                    <select onchange="updateDifficulty(this.value)">
+                        <option value="easy">Easy</option>
+                        <option value="normal" selected>Normal</option>
+                        <option value="hard">Hard</option>
+                        <option value="expert">Expert</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" checked> Enable Sound Effects
+                    </label>
+                </div>
+                <div class="setting-item">
+                    <label>
+                        <input type="checkbox" checked> Enable Music
+                    </label>
+                </div>
+            </div>
+            <button class="menu-btn primary" onclick="backToMenu()">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Credits Screen -->
+    <div id="creditsScreen" class="menu-screen hidden">
+        <div class="menu-content">
+            <h2>📖 About Gilli Danda</h2>
+            <div class="credits-text">
+                <h3>Traditional Indian Game</h3>
+                <p>Gilli Danda is an ancient Indian street game that has been played for centuries. Players use a long wooden bat (the "Danda") to hit a small wooden piece (the "Gilli") and compete to achieve the greatest distance.</p>
+                
+                <h3>Game Features</h3>
+                <ul>
+                    <li>🎮 Realistic physics simulation</li>
+                    <li>🎨 Beautiful 3D graphics</li>
+                    <li>👥 Single player and multiplayer modes</li>
+                    <li>🏆 Global leaderboard system</li>
+                    <li>⚙️ Customizable difficulty levels</li>
+                </ul>
+
+                <h3>Technical Credits</h3>
+                <p><strong>Engine:</strong> HTML5 Canvas & WebGL</p>
+                <p><strong>Physics:</strong> Custom physics engine</p>
+                <p><strong>Framework:</strong> Vanilla JavaScript</p>
+                <p><strong>Version:</strong> 1.0.0</p>
+            </div>
+            <button class="menu-btn primary" onclick="backToMenu()">Back to Menu</button>
+        </div>
+    </div>
+
+    <!-- Pause Menu -->
+    <div id="pauseMenu" class="modal hidden">
+        <div class="modal-content">
+            <h2>Game Paused</h2>
+            <button class="menu-btn primary" onclick="resumeGame()">Resume</button>
+            <button class="menu-btn" onclick="backToMenu()">Main Menu</button>
+            <button class="menu-btn" onclick="restartGame()">Restart</button>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="modal hidden">
+        <div class="modal-content">
+            <h2>Game Over!</h2>
+            <div class="game-stats">
+                <p><strong>Total Distance:</strong> <span id="finalDistance">0</span>m</p>
+                <p><strong>Total Score:</strong> <span id="finalScore">0</span></p>
+                <p><strong>Difficulty:</strong> <span id="finalDifficulty">Normal</span></p>
+            </div>
+            <div class="button-group">
+                <button class="menu-btn primary" onclick="restartGame()">Play Again</button>
+                <button class="menu-btn" onclick="backToMenu()">Main Menu</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="game.js"></script>
+    <script src="renderer.js"></script>
+    <script src="physics.js"></script>
+    <script src="ui.js"></script>
+</body>
+</html>
